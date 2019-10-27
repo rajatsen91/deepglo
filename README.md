@@ -20,10 +20,9 @@ All the input arguments are commented in the source files and usage instructions
 
 The datasets can be downloaded by the following commands:
 
-` 
-cd datasets
-bash download-data.sh
-`
+
+`cd datasets`
+`bash download-data.sh`
 
 
 ## Python Scripts
