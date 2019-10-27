@@ -14,7 +14,7 @@ sys.path.append('./')
 
 #### DeepGLO model imports
 from DeepGLO.metrics import *
-from DeepGLO.DeepGLOv2 import *
+from DeepGLO.DeepGLO import *
 from DeepGLO.LocalModel import *
 import pandas as pd
 import numpy as np
