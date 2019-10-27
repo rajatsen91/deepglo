@@ -41,4 +41,8 @@ Here, dataset can be replaced by the corresponding dataset. For instance for the
 
 `python run_scripts/run_electricity.py --normalize False`
 
+### License
+
+This repository follows the BSD license. 
+
 
