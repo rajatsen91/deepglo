@@ -5,7 +5,8 @@ from scipy.io import loadmat
 import torch.nn as nn
 import torch.optim as optim
 import numpy as np
-#import matplotlib
+
+# import matplotlib
 from torch.autograd import Variable
 import itertools
 from sklearn.preprocessing import normalize

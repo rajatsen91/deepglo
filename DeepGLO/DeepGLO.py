@@ -7,7 +7,8 @@ from torch.nn.utils import weight_norm
 import torch.nn as nn
 import torch.optim as optim
 import numpy as np
-#import matplotlib
+
+# import matplotlib
 from torch.autograd import Variable
 import sys
 
@@ -75,7 +76,7 @@ class DeepGLO(object):
         dti=None,
         svd=False,
         period=None,
-        forward_cov=False
+        forward_cov=False,
     ):
         self.start_date = start_date
         self.freq = freq
@@ -90,12 +91,12 @@ class DeepGLO(object):
             num_channels=num_channels_X,
             kernel_size=kernel_size,
             dropout=dropout,
-            init = True
+            init=True,
         )
 
         if normalize:
             self.s = np.std(Ymat[:, 0:end_index], axis=1)
-            #self.s[self.s == 0] = 1.0
+            # self.s[self.s == 0] = 1.0
             self.s += 1.0
             self.m = np.mean(Ymat[:, 0:end_index], axis=1)
             self.Ymat = (Ymat - self.m[:, None]) / self.s[:, None]
@@ -640,7 +641,7 @@ class DeepGLO(object):
                 period += self.period
             ycovs[:, 1, period - 1 : :] = self.Ymat[
                 :, last_step - rg : last_step + future - (period - 1)
-            ] ### this seems like we are looking ahead, but it will not use the last coordinate, which is the only new point added
+            ]  ### this seems like we are looking ahead, but it will not use the last coordinate, which is the only new point added
         # print(ycovs.shape)
 
         Y = self.Yseq.predict_future(
@@ -682,7 +683,7 @@ class DeepGLO(object):
         actual_values = []
         predicted_values_global = []
         S = out[:, -tau::]
-        S_g = out_global[:,-tau::]
+        S_g = out_global[:, -tau::]
         predicted_values += [S]
         predicted_values_global += [S_g]
         R = Ymat[:, self.end_index : self.end_index + tau]
@@ -719,7 +720,7 @@ class DeepGLO(object):
                 bsize=bsize,
             )
             S = out[:, -tau::]
-            S_g = out_global[:,-tau::]
+            S_g = out_global[:, -tau::]
             predicted_values += [S]
             predicted_values_global += [S_g]
             R = Ymat[:, self.end_index : self.end_index + tau]

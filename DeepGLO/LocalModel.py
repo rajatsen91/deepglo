@@ -6,7 +6,8 @@ from torch.nn.utils import weight_norm
 import torch.nn as nn
 import torch.optim as optim
 import numpy as np
-#import matplotlib
+
+# import matplotlib
 from torch.autograd import Variable
 
 
@@ -103,7 +104,9 @@ class TemporalBlock(nn.Module):
             nn.init.normal_(self.conv1.weight, std=1e-3)
             nn.init.normal_(self.conv2.weight, std=1e-3)
 
-            self.conv1.weight[:,0,:] += 1.0 / self.kernel_size  ###new initialization scheme
+            self.conv1.weight[:, 0, :] += (
+                1.0 / self.kernel_size
+            )  ###new initialization scheme
             self.conv2.weight += 1.0 / self.kernel_size  ###new initialization scheme
 
             nn.init.normal_(self.conv1.bias, std=1e-6)
@@ -183,7 +186,9 @@ class TemporalBlock_last(nn.Module):
             nn.init.normal_(self.conv1.weight, std=1e-3)
             nn.init.normal_(self.conv2.weight, std=1e-3)
 
-            self.conv1.weight[:,0,:] += 1.0 / self.kernel_size  ###new initialization scheme
+            self.conv1.weight[:, 0, :] += (
+                1.0 / self.kernel_size
+            )  ###new initialization scheme
             self.conv2.weight += 1.0 / self.kernel_size  ###new initialization scheme
 
             nn.init.normal_(self.conv1.bias, std=1e-6)
@@ -324,7 +329,7 @@ class LocalModel(object):
             Y = Ymat
             m = np.mean(Y[:, 0 : self.end_index], axis=1)
             s = np.std(Y[:, 0 : self.end_index], axis=1)
-            #s[s == 0] = 1.0
+            # s[s == 0] = 1.0
             s += 1.0
             Y = (Y - m[:, None]) / s[:, None]
             mini = np.abs(np.min(Y))
@@ -344,7 +349,7 @@ class LocalModel(object):
             num_channels=num_channels,
             kernel_size=kernel_size,
             dropout=dropout,
-            init = True
+            init=True,
         )
 
         self.seq = self.seq.float()
@@ -580,7 +585,7 @@ class LocalModel(object):
         return out
 
     def rolling_validation(self, Ymat, tau=24, n=7, bsize=90, cpu=False, alpha=0.3):
-        last_step = Ymat.shape[1] - tau*n
+        last_step = Ymat.shape[1] - tau * n
         rg = 1 + 2 * (self.kernel_size - 1) * 2 ** (len(self.num_channels) - 1)
         self.seq = self.seq.eval()
         if self.covariates is not None:
@@ -591,7 +596,7 @@ class LocalModel(object):
             ycovs = self.Ycov[:, :, last_step - rg : last_step + tau]
         else:
             ycovs = None
-        data_in = Ymat[:,last_step-rg:last_step]
+        data_in = Ymat[:, last_step - rg : last_step]
         out = self.predict_future(
             data_in,
             covariates=covs,
@@ -599,7 +604,7 @@ class LocalModel(object):
             future=tau,
             cpu=cpu,
             bsize=bsize,
-            normalize=self.normalize
+            normalize=self.normalize,
         )
         predicted_values = []
         actual_values = []
@@ -608,7 +613,6 @@ class LocalModel(object):
         R = Ymat[:, last_step : last_step + tau]
         actual_values += [R]
         print("Current window wape: " + str(wape(S, R)))
-
 
         for i in range(n - 1):
             last_step += tau
@@ -621,7 +625,7 @@ class LocalModel(object):
                 ycovs = self.Ycov[:, :, last_step - rg : last_step + tau]
             else:
                 ycovs = None
-            data_in = Ymat[:,last_step-rg:last_step]
+            data_in = Ymat[:, last_step - rg : last_step]
             out = self.predict_future(
                 data_in,
                 covariates=covs,
@@ -629,7 +633,7 @@ class LocalModel(object):
                 future=tau,
                 cpu=cpu,
                 bsize=bsize,
-                normalize=self.normalize
+                normalize=self.normalize,
             )
             S = out[:, -tau::]
             predicted_values += [S]
@@ -654,6 +658,3 @@ class LocalModel(object):
         dic["baseline_smape"] = smape(baseline, actual)
 
         return dic
-
-
-    
