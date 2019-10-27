@@ -19,8 +19,9 @@ function gdrive-get() {
     fi
 }
 
-gdrive-get 1fkK538QhyQUvnb6w_rCp6iQU1Yc-wQ8E electricity.npy
-gdrive-get 15OqvYMkCsEyotK5fvTvZDdfK_HH8IYu5 traffic.npy
-gdrive-get 1xEDHyAdY2VbFJ-oD5sH1nd33wClaoNyC wiki.npy
+gdrive-get 1UUwvY8Ixbwt3_fyDlJM80spZpgoOexRl electricity.npy
+gdrive-get 1dyeYj8IJwZ3bKvk1H67eaDTANdapKe7w traffic.npy
+gdrive-get 1VytXoL_vkrLqXxCR5IOXgE45hN2UL5oB wiki.npy
+gdrive-get 1AE_s47dpRuSFgRREb_8jcVJij0kxaaHs pems.npy
 
 #python reshape_data.py 
