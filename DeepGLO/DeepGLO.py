@@ -507,7 +507,10 @@ class DeepGLO(object):
             if use_cuda:
                 inp = inp.cuda()
 
-            output = np.array(self.temporal_to_tensor2d(self.Xseq(inp)).cpu().detach())
+            Xin = self.tensor2d_to_temporal(self.X[:, last_hindex : last_hindex + inp.size(2)]).cuda()
+            Xout = self.temporal_to_tensor2d(self.Xseq(Xin)).cpu()
+            Fout = self.F[self.D.I[last_vindex : last_vindex + out.size(0)], :]
+            output = np.array(torch.matmul(Fout, Xout).detach())
             Ycov[
                 last_vindex : last_vindex + output.shape[0],
                 last_hindex + 1 : last_hindex + 1 + output.shape[1],
